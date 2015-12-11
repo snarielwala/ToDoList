@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">ToDoList</string>
+    <string name="action_settings">Settings</string>
+    <string name="addItem">Add Item</string>
+    <string name="edit_item_label">Edit Item Below</string>
+    <string name="save_label">Save</string>
+    <string name="title_activity_edit">EditActivity</string>
+</resources>
