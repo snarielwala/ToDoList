@@ -3,6 +3,8 @@ package photobom.com.todolist.activities;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -11,7 +13,11 @@ import java.util.ArrayList;
 import photobom.com.todolist.R;
 import photobom.com.todolist.helpers.Constants;
 
-public class EditItemActivity extends Activity {
+/**
+ * Created by snarielwala on 12/13/15.
+ */
+
+public class EditItemActivity extends AppCompatActivity {
 
             private static final String TAG = EditItemActivity.class.getSimpleName();
 

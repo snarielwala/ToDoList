@@ -10,6 +10,11 @@ import com.activeandroid.query.Update;
 import java.io.Serializable;
 import java.util.List;
 
+
+/**
+ * Created by snarielwala on 12/13/15.
+ */
+
 @Table(name = "Item")
 public class Item extends Model implements Serializable {
 

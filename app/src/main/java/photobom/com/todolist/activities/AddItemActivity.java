@@ -3,6 +3,8 @@ package photobom.com.todolist.activities;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -12,17 +14,17 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 
-import org.apache.commons.io.FileUtils;
-
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 
 import photobom.com.todolist.R;
 import photobom.com.todolist.helpers.Constants;
 import photobom.com.todolist.models.Item;
 
-public class AddItemActivity extends Activity {
+/**
+ * Created by snarielwala on 12/13/15.
+ */
+
+public class AddItemActivity extends AppCompatActivity {
 
     private static final String TAG = AddItemActivity.class.getSimpleName();
 
