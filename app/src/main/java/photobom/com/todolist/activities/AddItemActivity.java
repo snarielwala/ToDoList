@@ -20,20 +20,15 @@ import java.util.ArrayList;
 
 import photobom.com.todolist.R;
 import photobom.com.todolist.helpers.Constants;
+import photobom.com.todolist.models.Item;
 
 public class AddItemActivity extends Activity {
 
     private static final String TAG = AddItemActivity.class.getSimpleName();
-    private static final int RESULT_CODE_CHANGE=1;
-    private static final int RESULT_CODE_NO_CHANGE=2;
-    private static final String OLD_NAME = "oldName";
-    private static final String NEW_NAME = "newName";
-    private static final String POSITION = "position";
-
 
     private EditText etNewItem;
-    private ArrayList<String> items;
-    private ArrayAdapter<String> itemsAdapter;
+    private ArrayList<Item> items;
+    private ArrayAdapter<Item> itemsAdapter;
     private ListView lvItems;
 
 
@@ -47,9 +42,9 @@ public class AddItemActivity extends Activity {
         lvItems = (ListView) findViewById(R.id.lvItems);
 
         readItems();
-        Log.d(TAG, "Items read from file:" + items.toString());
+        Log.d(TAG, "Items read from database");
 
-        itemsAdapter = new ArrayAdapter<String>(this,
+        itemsAdapter = new ArrayAdapter<Item>(this,
                 android.R.layout.simple_list_item_1, items);
         lvItems.setAdapter(itemsAdapter);
         setupListViewListener();
@@ -92,9 +87,10 @@ public class AddItemActivity extends Activity {
                         //edit activity called from here using intent
                         //position and name sent to the second activity
                         Intent intent = new Intent(getApplicationContext(), EditItemActivity.class);
-                        String selectedFromList = (String) (adapter.getItemAtPosition(pos));
-                        intent.putExtra(OLD_NAME, selectedFromList);
-                        intent.putExtra(POSITION,pos);
+                        intent.putExtra(Constants.OLD_NAME, items.get(pos).getName());
+                        intent.putExtra(Constants.POSITION,pos);
+                        Log.d(TAG, "SelectedItem for update Name:" + items.get(pos).getName());
+
 
                         startActivityForResult(intent, 1);
 
@@ -106,11 +102,14 @@ public class AddItemActivity extends Activity {
                     @Override
                     public boolean onItemLongClick(AdapterView<?> adapter,
                                                    View item, int pos, long id) {
+                        Item itemToBeDeleted = (Item)adapter.getItemAtPosition(pos);
+                        Log.d(TAG, "Item to be deleted :" + itemToBeDeleted.getName());
+                        itemToBeDeleted.delete();
                         // Remove the item within array at position
                         items.remove(pos);
                         // Refresh the adapter
                         itemsAdapter.notifyDataSetChanged();
-                        writeItems();
+
                         return true;
                     }
 
@@ -124,9 +123,10 @@ public class AddItemActivity extends Activity {
     public void onAddItem(View view) {
         Log.d(TAG,"AddItem Started");
         String itemText = etNewItem.getText().toString();
-        itemsAdapter.add(itemText);
+        Item newItem=Item.addItem(itemText);
+        itemsAdapter.add(newItem);
         etNewItem.setText("");
-        writeItems();
+
         Log.d(TAG, "AddItem Ended, New Item Added:" + itemText);
     }
 
@@ -136,31 +136,10 @@ public class AddItemActivity extends Activity {
      */
     private void readItems() {
         Log.d(TAG,"readItems Started");
-        File filesDir = getFilesDir();
-        File todoFile = new File(filesDir, "todo.txt");
-        try {
-            items = new ArrayList<String>(FileUtils.readLines(todoFile));
-
-        } catch (IOException e) {
-            items = new ArrayList<String>();
-        }
-
-        Log.d(TAG,"readItems Ended With items:"+items.toString());
+        Log.d(TAG,"readItems Started");
+        items = (ArrayList<Item>)Item.getAllItems();
+        Log.d(TAG,"readItems Ended With items:");
     }
-
-    /*
-    Writes to the items to the file
-     */
-    private void writeItems() {
-        File filesDir = getFilesDir();
-        File todoFile = new File(filesDir, "todo.txt");
-        try {
-            FileUtils.writeLines(todoFile, items);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
 
     /*
     On finishing the edit Activity this method is called
@@ -170,18 +149,20 @@ public class AddItemActivity extends Activity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode==RESULT_CODE_CHANGE) {
+        if(requestCode==Constants.RESULT_CODE_CHANGE) {
             Log.d(TAG, "onActivityResult Called");
 
             String oldName = data.getStringExtra(Constants.OLD_NAME);
             String newName = data.getStringExtra(Constants.NEW_NAME);
             int position = data.getIntExtra(Constants.POSITION, 1);
 
-            Log.d(TAG, OLD_NAME + ":" + oldName + " " + NEW_NAME + newName+"@" + POSITION +":"+position);
+            Log.d(TAG, Constants.OLD_NAME + ":" + oldName + " " + Constants.NEW_NAME + newName + "@" + Constants.POSITION + ":" + position);
 
-            itemsAdapter.remove(oldName);
-            itemsAdapter.insert(newName, position);
-            writeItems();
+            Item itemToBeUpdated= (Item) items.get(position);
+            Log.d(TAG,"Update item ID:"+itemToBeUpdated.getId() + "Item Name"+itemToBeUpdated.getName());
+            Item.updateItem(itemToBeUpdated.getId(), newName);
+            items.get(position).setName(newName);
+            itemsAdapter.notifyDataSetChanged();
         }
     }
 }
