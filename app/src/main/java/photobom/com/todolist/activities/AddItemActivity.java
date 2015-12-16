@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import photobom.com.todolist.R;
+import photobom.com.todolist.helpers.Constants;
 
 public class AddItemActivity extends Activity {
 
@@ -126,7 +127,7 @@ public class AddItemActivity extends Activity {
         itemsAdapter.add(itemText);
         etNewItem.setText("");
         writeItems();
-        Log.d(TAG, "AddItem Ended, New Item Added:"+itemText);
+        Log.d(TAG, "AddItem Ended, New Item Added:" + itemText);
     }
 
     /*
@@ -172,14 +173,14 @@ public class AddItemActivity extends Activity {
         if(requestCode==RESULT_CODE_CHANGE) {
             Log.d(TAG, "onActivityResult Called");
 
-            String oldName = data.getStringExtra(OLD_NAME);
-            String newName = data.getStringExtra(NEW_NAME);
-            int position = data.getIntExtra(POSITION,1);
+            String oldName = data.getStringExtra(Constants.OLD_NAME);
+            String newName = data.getStringExtra(Constants.NEW_NAME);
+            int position = data.getIntExtra(Constants.POSITION, 1);
 
             Log.d(TAG, OLD_NAME + ":" + oldName + " " + NEW_NAME + newName+"@" + POSITION +":"+position);
 
             itemsAdapter.remove(oldName);
-            itemsAdapter.insert(newName,position);
+            itemsAdapter.insert(newName, position);
             writeItems();
         }
     }
