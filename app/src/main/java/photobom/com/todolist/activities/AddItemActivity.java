@@ -1,9 +1,8 @@
 package photobom.com.todolist.activities;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -13,18 +12,21 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
 import photobom.com.todolist.R;
+import photobom.com.todolist.fragments.EditItemFragment;
 import photobom.com.todolist.helpers.Constants;
 import photobom.com.todolist.models.Item;
+import photobom.com.todolist.fragments.EditItemFragment.EditNameDialogListener;
 
 /**
  * Created by snarielwala on 12/13/15.
  */
 
-public class AddItemActivity extends AppCompatActivity {
+public class AddItemActivity extends AppCompatActivity implements EditNameDialogListener {
 
     private static final String TAG = AddItemActivity.class.getSimpleName();
 
@@ -37,7 +39,7 @@ public class AddItemActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        Log.d(TAG,"onCreate Started");
+        Log.d(TAG, "onCreate Started");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_item);
         etNewItem= (EditText)findViewById(R.id.etNewItem);
@@ -88,13 +90,13 @@ public class AddItemActivity extends AppCompatActivity {
                                             View item, int pos, long id) {
                         //edit activity called from here using intent
                         //position and name sent to the second activity
-                        Intent intent = new Intent(getApplicationContext(), EditItemActivity.class);
-                        intent.putExtra(Constants.OLD_NAME, items.get(pos).getName());
-                        intent.putExtra(Constants.POSITION,pos);
-                        Log.d(TAG, "SelectedItem for update Name:" + items.get(pos).getName());
+                        //Intent intent = new Intent(getApplicationContext(), EditItemActivity.class);
+                        //intent.putExtra(Constants.OLD_NAME, items.get(pos).getName());
+                        //intent.putExtra(Constants.POSITION,pos);
+                        //Log.d(TAG, "SelectedItem for update Name:" + items.get(pos).getName());
 
-
-                        startActivityForResult(intent, 1);
+                        showEditDialog(items.get(pos).getName(),pos);
+                        //startActivityForResult(intent, 1);
 
                     }
                 });
@@ -138,7 +140,7 @@ public class AddItemActivity extends AppCompatActivity {
      */
     private void readItems() {
         Log.d(TAG,"readItems Started");
-        Log.d(TAG,"readItems Started");
+        Log.d(TAG, "readItems Started");
         items = (ArrayList<Item>)Item.getAllItems();
         Log.d(TAG,"readItems Ended With items:");
     }
@@ -167,4 +169,20 @@ public class AddItemActivity extends AppCompatActivity {
             itemsAdapter.notifyDataSetChanged();
         }
     }
+
+    private void showEditDialog(String selectedItemName,int position) {
+        FragmentManager fm = getSupportFragmentManager();
+        EditItemFragment editNameDialog = EditItemFragment.newInstance(selectedItemName,position);
+        editNameDialog.show(fm, "fragment_edit_name");
+    }
+
+    public void onFinishEditDialog(String inputText,int position) {
+        Item itemToBeUpdated= (Item) items.get(position);
+        Log.d(TAG,"Update item ID:"+itemToBeUpdated.getId() + "Item Name"+itemToBeUpdated.getName());
+        Item.updateItem(itemToBeUpdated.getId(), inputText);
+        items.get(position).setName(inputText);
+        itemsAdapter.notifyDataSetChanged();
+    }
+
+
 }
