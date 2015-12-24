@@ -35,7 +35,6 @@ public class AddItemActivity extends AppCompatActivity implements EditNameDialog
     private ArrayAdapter<Item> itemsAdapter;
     private ListView lvItems;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -70,17 +69,15 @@ public class AddItemActivity extends AppCompatActivity implements EditNameDialog
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 
     private void setupListViewListener() {
         /*
-        new item click listener for the list items
+        new item click listener, called when an item is clicked for edit
          */
         lvItems.setOnItemClickListener(
 
@@ -100,7 +97,9 @@ public class AddItemActivity extends AppCompatActivity implements EditNameDialog
 
                     }
                 });
-
+        /*
+         long click listener, called when an item is long-clicked for deletion
+         */
         lvItems.setOnItemLongClickListener(
                 new AdapterView.OnItemLongClickListener() {
                     @Override
@@ -109,9 +108,7 @@ public class AddItemActivity extends AppCompatActivity implements EditNameDialog
                         Item itemToBeDeleted = (Item)adapter.getItemAtPosition(pos);
                         Log.d(TAG, "Item to be deleted :" + itemToBeDeleted.getName());
                         itemToBeDeleted.delete();
-                        // Remove the item within array at position
                         items.remove(pos);
-                        // Refresh the adapter
                         itemsAdapter.notifyDataSetChanged();
 
                         return true;
@@ -121,22 +118,19 @@ public class AddItemActivity extends AppCompatActivity implements EditNameDialog
     }
 
     /*
-    Method called when new item is added.
-    Updates the item adapter and writes to the file
+    onAddItem called when a new item is added, persists to db and updates view
      */
     public void onAddItem(View view) {
-        Log.d(TAG,"AddItem Started");
+        Log.d(TAG, "AddItem Started");
         String itemText = etNewItem.getText().toString();
-        Item newItem=Item.addItem(itemText);
-        itemsAdapter.add(newItem);
+        itemsAdapter.add(Item.addItem(itemText));
         etNewItem.setText("");
 
         Log.d(TAG, "AddItem Ended, New Item Added:" + itemText);
     }
 
     /*
-    Read method reads all the items from the file
-    on startup
+    Read method reads all the items from the database on startup
      */
     private void readItems() {
         Log.d(TAG,"readItems Started");
@@ -146,9 +140,30 @@ public class AddItemActivity extends AppCompatActivity implements EditNameDialog
     }
 
     /*
-    On finishing the edit Activity this method is called
-    If the user changes the item name,
-        the item adapter is updated and new item is written to the file
+    showEditDialogue box method called by the onClickListener, A dialogue fragment instance is created
+     */
+    private void showEditDialog(String selectedItemName,int position) {
+        FragmentManager fm = getSupportFragmentManager();
+        EditItemFragment editNameDialog = EditItemFragment.newInstance(selectedItemName,position);
+        editNameDialog.show(fm, "fragment_edit_name");
+    }
+
+    /*
+     onFinishDialog checkes if the updatedName and the oldName are different, updates only if there is a change
+     */
+    public void onFinishEditDialog(String inputText,int position) {
+        Item itemToBeUpdated= (Item) items.get(position);
+        Log.d(TAG,"Update item ID:"+itemToBeUpdated.getId() + "Item Name"+itemToBeUpdated.getName());
+
+        if(!itemToBeUpdated.getName().equals(inputText)){
+        Item.updateItem(itemToBeUpdated.getId(), inputText);
+        items.get(position).setName(inputText);
+        itemsAdapter.notifyDataSetChanged();
+        }
+    }
+
+    /*
+      this method is used only when using another activity and not the dialogue fragment.
      */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -169,20 +184,5 @@ public class AddItemActivity extends AppCompatActivity implements EditNameDialog
             itemsAdapter.notifyDataSetChanged();
         }
     }
-
-    private void showEditDialog(String selectedItemName,int position) {
-        FragmentManager fm = getSupportFragmentManager();
-        EditItemFragment editNameDialog = EditItemFragment.newInstance(selectedItemName,position);
-        editNameDialog.show(fm, "fragment_edit_name");
-    }
-
-    public void onFinishEditDialog(String inputText,int position) {
-        Item itemToBeUpdated= (Item) items.get(position);
-        Log.d(TAG,"Update item ID:"+itemToBeUpdated.getId() + "Item Name"+itemToBeUpdated.getName());
-        Item.updateItem(itemToBeUpdated.getId(), inputText);
-        items.get(position).setName(inputText);
-        itemsAdapter.notifyDataSetChanged();
-    }
-
 
 }

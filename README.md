@@ -12,7 +12,11 @@ User Stories/Tasks Completed:
 
 Additional Items Completed:
 
-1.The app uses MySqlite with ActiveAndroid ORM for persistence
-2.
+1.The app uses MySqlite for persistence
+2.Using ActiveAndroid as the ORM for MySqlite
+3.Using dialogue box to edit items
 
 #GIF
+https://drive.google.com/open?id=0B5a5dL5oWpX_dTJxWkpiQXIyOHM
+
+

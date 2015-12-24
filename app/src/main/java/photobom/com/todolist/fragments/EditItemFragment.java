@@ -1,6 +1,5 @@
 package photobom.com.todolist.fragments;
 
-import android.content.Intent;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.os.Bundle;
@@ -16,8 +15,6 @@ import android.widget.EditText;
 import photobom.com.todolist.R;
 import photobom.com.todolist.helpers.Constants;
 
-import android.widget.TextView;
-import android.widget.TextView.OnEditorActionListener;
 
 /**
  * Created by snarielwala on 12/16/15.
@@ -26,18 +23,22 @@ public class EditItemFragment extends DialogFragment implements View.OnClickList
     private EditText fetEditItem;
     private int position;
     private Button saveButton;
+    private String selectedItemName;
 
     public EditItemFragment() {
-        // Empty constructor is required for DialogFragment
-        // Make sure not to add arguments to the constructor
-        // Use `newInstance` instead as shown below
     }
 
+    /*
+    Read method reads all the items from the database on startup
+     */
     public interface EditNameDialogListener {
         void onFinishEditDialog(String oldName, int position);
     }
 
 
+    /*
+    Additional constructor for the editItemFragment that accepts a string and an int
+     */
     public static EditItemFragment newInstance(String selectedItemName, int position) {
         EditItemFragment frag = new EditItemFragment();
         Bundle args = new Bundle();
@@ -53,27 +54,32 @@ public class EditItemFragment extends DialogFragment implements View.OnClickList
         return inflater.inflate(R.layout.fragment_edit_name, container);
     }
 
+    /*
+    sets up the view for the dialogue fragment
+     */
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        // Get field from view
         fetEditItem = (EditText) view.findViewById(R.id.fetEditItem);
-        String selectedItemName = getArguments().getString(Constants.SELECTED_ITEM);
+
+        selectedItemName = getArguments().getString(Constants.SELECTED_ITEM);
         position=getArguments().getInt(Constants.POSITION);
         fetEditItem.setText(selectedItemName);
+
         saveButton = (Button) view.findViewById(R.id.saveBtnFragment);
         saveButton.setOnClickListener(this);
-        // Fetch arguments from bundle and set title
         getDialog().setTitle(Constants.TITLE);
-        // Show soft keyboard automatically and request focus to field
         fetEditItem.requestFocus();
         getDialog().getWindow().setSoftInputMode(
                 WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
     }
 
+    /*
+    Method called on clicking the save button the dialogue box
+    This method eventually calls the onFinishedEdit dialogue method of the parent activity
+     */
     @Override
     public void onClick(View view) {
-        // Return input text to activity
         EditNameDialogListener listener = (EditNameDialogListener) getActivity();
         listener.onFinishEditDialog(fetEditItem.getText().toString(),position);
         dismiss();
