@@ -25,7 +25,7 @@ The following **optional** features are implemented:
 Here's a walkthrough of implemented user stories:
 
 #GIF
-<img src='https://drive.google.com/open?id=0B5a5dL5oWpX_dTJxWkpiQXIyOHM'/>
+<img src='https://drive.google.com/file/d/0B5a5dL5oWpX_dTJxWkpiQXIyOHM/view?usp=sharing'/>
 
 
 
