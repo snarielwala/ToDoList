@@ -18,9 +18,9 @@ The following **required** functionalities have been completed:
 
 The following **optional** features are implemented:
 
-1.The app uses MySqlite for persistence
-2.Using ActiveAndroid as the ORM for MySqlite
-3.Using dialogue box to edit items
+1. The app uses MySqlite for persistence
+2. Using ActiveAndroid as the ORM for MySqlite
+3. Using dialogue box to edit items 
 
 Here's a walkthrough of implemented user stories:
 
