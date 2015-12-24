@@ -1,4 +1,4 @@
-# todolist
+# To-Do List Application
 A simple android todo list application
 
 #Submission of the ToDoList Application for Android Bootcamp
