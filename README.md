@@ -18,5 +18,3 @@ Additional Items Completed:
 
 #GIF
 https://drive.google.com/open?id=0B5a5dL5oWpX_dTJxWkpiQXIyOHM
-
-
