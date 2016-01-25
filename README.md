@@ -21,7 +21,7 @@ The following **optional** features are implemented:
 *The app uses MySqlite for persistence
 *Using ActiveAndroid as the ORM for MySqlite
 *Using dialogue fragment to edit items 
-
+*Every Item has a due date (Implemented using custom Item adapter)
 
 Here's a walkthrough of implemented user stories:
 
