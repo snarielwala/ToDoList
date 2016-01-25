@@ -167,11 +167,11 @@ public class AddItemActivity extends AppCompatActivity implements EditNameDialog
         Item itemToBeUpdated= (Item) items.get(position);
         Log.d(TAG, "Update item ID:" + itemToBeUpdated.getId() + "Item Name" + itemToBeUpdated.getName());
 
-        if(!itemToBeUpdated.getName().equals(inputText)){
+        //if(!itemToBeUpdated.getName().equals(inputText)){
         Item.updateItem(itemToBeUpdated.getId(), inputText, dueDate);
         items.get(position).setName(inputText);items.get(position).setDueDate(dueDate);
         itemsAdapter.notifyDataSetChanged();
-        }
+        //}
     }
 
     public void onFinishAddDueDateDialog(String itemText, String dueDateString) {

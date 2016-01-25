@@ -27,7 +27,7 @@ import photobom.com.todolist.helpers.Constants;
 public class AddDueDateFragment extends DialogFragment implements View.OnClickListener {
 
     private Button addItemButton;
-    private Button selectDueDateButton;
+    private static Button selectDueDateButton;
     private String addItemName;
 
     private static SimpleDateFormat dueDate;
@@ -102,6 +102,7 @@ public class AddDueDateFragment extends DialogFragment implements View.OnClickLi
         dueDate = new SimpleDateFormat("dd MMMM yyyy");
 
         dueDateString = dueDate.format(cal.getTime());
+        selectDueDateButton.setText(dueDateString);
 
     }// updateDisplay
 

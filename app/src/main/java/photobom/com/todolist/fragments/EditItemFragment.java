@@ -37,10 +37,9 @@ public class EditItemFragment extends DialogFragment implements View.OnClickList
     private int position;
     private Button saveButton;
     private String selectedItemName;
-    private TextView editDueDateTextView;
+    private static TextView editDueDateTextView;
     private static SimpleDateFormat dueDate;
     private static String dueDateString;
-    private Button changeDueDateButton;
 
 
 
@@ -87,17 +86,15 @@ public class EditItemFragment extends DialogFragment implements View.OnClickList
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        changeDueDateButton = (Button) view.findViewById(R.id.changeDueDate);
-        changeDueDateButton.setOnClickListener(new View.OnClickListener() {
+        editDueDateTextView = (TextView) view.findViewById(R.id.editDueDateText);
+        editDueDateTextView.setText(getArguments().getString(Constants.DUE_DATE));
+        editDueDateTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 DialogFragment newFragment = new DatePickerFragment();
                 newFragment.show(getFragmentManager(), "DatePicker");
             }
         });
-
-        editDueDateTextView = (TextView) view.findViewById(R.id.editDueDateText);
-        editDueDateTextView.setText(getArguments().getString(Constants.DUE_DATE));
 
         fetEditItem = (EditText) view.findViewById(R.id.fetEditItem);
         selectedItemName = getArguments().getString(Constants.SELECTED_ITEM);
@@ -109,13 +106,7 @@ public class EditItemFragment extends DialogFragment implements View.OnClickList
         getDialog().setTitle(Constants.TITLE);
         fetEditItem.requestFocus();
         editDueDateTextView.setText(editDueDate);
-        editDueDateTextView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                DialogFragment newFragment = new DatePickerFragment();
-                newFragment.show(getFragmentManager(), "DatePicker");
-            }
-        });
+
 
         getDialog().getWindow().setSoftInputMode(
                 WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
@@ -128,6 +119,7 @@ public class EditItemFragment extends DialogFragment implements View.OnClickList
     @Override
     public void onClick(View view) {
         EditNameDialogListener listener = (EditNameDialogListener) getActivity();
+        Log.d(TAG,"Due Date: "+ dueDateString);
         listener.onFinishEditDialog(fetEditItem.getText().toString(),position,dueDateString);
         dismiss();
     }
@@ -149,7 +141,7 @@ public class EditItemFragment extends DialogFragment implements View.OnClickList
         }
 
         public void onDateSet(DatePicker view, int year, int month, int day) {
-            
+
             updateDisplay(year,month,day);
         }
 
@@ -161,8 +153,9 @@ public class EditItemFragment extends DialogFragment implements View.OnClickList
             dueDate = new SimpleDateFormat("dd MMMM yyyy");
 
             dueDateString = dueDate.format(cal.getTime());
+            editDueDateTextView.setText(dueDateString);
 
-            Log.d(TAG,"Due Date: "+ dueDate);
+            Log.d(TAG,"Due Date: "+ dueDateString);
 
 
         }// updateDisplay
