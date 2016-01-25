@@ -22,6 +22,9 @@ public class Item extends Model implements Serializable {
     @Column(name = "name")
     private String name;
 
+    @Column(name = "dueDate")
+    public String dueDate;
+
     public void setName(String name) {
         this.name = name;
     }
@@ -31,22 +34,54 @@ public class Item extends Model implements Serializable {
         return name;
     }
 
+    public String getDueDate() {
+        return dueDate;
+    }
+
+    public void setDueDate(String dueDate) {
+        this.dueDate = dueDate;
+    }
+
+
     // Make sure to have a default constructor for every ActiveAndroid model
     public Item(){
         super();
     }
 
+    //old constructor
     public Item(String name){
         super();
         this.name = name;
+        this.dueDate=dueDate;
     }
 
+    public Item(String name, String dueDate){
+        super();
+        this.name = name;
+        this.dueDate=dueDate;
+    }
+
+    //old AddItem
     public static Item addItem(String name){
         Item item = new Item(name);
         item.save();
         return item;
     }
 
+    public static Item addItem(String name, String dueDate){
+        Item item = new Item(name,dueDate);
+        item.save();
+        return item;
+    }
+
+    public static void updateItem(Long id, String name, String dueDate){
+        new Update(Item.class)
+                .set("name = ?, dueDate = ?", name, dueDate)
+                .where("Id = ?", id)
+                .execute();
+    }
+
+    //old updateItem
     public static void updateItem(Long id, String name){
         new Update(Item.class)
                 .set("name = ?", name)

@@ -11,6 +11,21 @@
         android:layout_below="@+id/tLabel"
         android:layout_alignParentStart="true" />
 
+    <TextView
+        android:id="@+id/editDueDateText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:typeface="monospace"
+        android:textSize="15dp"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Change Due Date"
+        android:id="@+id/changeDueDate"
+        />
+
+
     <Button
         style="?android:attr/buttonStyleSmall"
         android:layout_width="wrap_content"

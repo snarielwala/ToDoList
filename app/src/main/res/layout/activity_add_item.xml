@@ -25,6 +25,14 @@
         android:layout_toStartOf="@+id/btnAddItem"
         android:layout_alignParentBottom="true" />
 
+    <TextView
+        android:id="@+id/editDueDateText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:typeface="monospace"
+        android:textSize="15dp"/>
+
+
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

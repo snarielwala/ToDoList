@@ -14,5 +14,8 @@ public class Constants {
     public static final String POSITION = "position";
     public static final String SELECTED_ITEM="selectedItem";
     public static final String TITLE="Edit Item";
+    public static final String DUE_DATE="dueDate";
+    public static final String ADD_ITEM_NAME="itemName";
+    public static final String ADD_DUE_DATE_TITLE="Add Due Date";
 
 }

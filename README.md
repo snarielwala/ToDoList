@@ -18,13 +18,14 @@ The following **required** functionalities have been completed:
 
 The following **optional** features are implemented:
 
-1. The app uses MySqlite for persistence
-2. Using ActiveAndroid as the ORM for MySqlite
-3. Using dialogue box to edit items 
+*The app uses MySqlite for persistence
+*Using ActiveAndroid as the ORM for MySqlite
+*Using dialogue fragment to edit items 
+
 
 Here's a walkthrough of implemented user stories:
 
-#GIF
+#Video Walkthrough
 <img src='http://i.imgur.com/PYUH9Jd.gif' title='Video Walkthrough' width='' alt='Video Walkthrough'/>
 
 GIF created with [LiceCap](http://www.cockos.com/licecap/).

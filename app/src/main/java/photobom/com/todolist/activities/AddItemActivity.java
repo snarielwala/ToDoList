@@ -17,22 +17,24 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 import photobom.com.todolist.R;
+import photobom.com.todolist.adapters.ItemAdapter;
+import photobom.com.todolist.fragments.AddDueDateFragment;
 import photobom.com.todolist.fragments.EditItemFragment;
 import photobom.com.todolist.helpers.Constants;
 import photobom.com.todolist.models.Item;
 import photobom.com.todolist.fragments.EditItemFragment.EditNameDialogListener;
-
+import photobom.com.todolist.fragments.AddDueDateFragment.AddDueDateDialogListener;
 /**
  * Created by snarielwala on 12/13/15.
  */
 
-public class AddItemActivity extends AppCompatActivity implements EditNameDialogListener {
+public class AddItemActivity extends AppCompatActivity implements EditNameDialogListener, AddDueDateDialogListener {
 
     private static final String TAG = AddItemActivity.class.getSimpleName();
 
     private EditText etNewItem;
-    private ArrayList<Item> items;
-    private ArrayAdapter<Item> itemsAdapter;
+    private ArrayList<Item>  items;
+    private ItemAdapter itemsAdapter;
     private ListView lvItems;
 
     @Override
@@ -47,8 +49,7 @@ public class AddItemActivity extends AppCompatActivity implements EditNameDialog
         readItems();
         Log.d(TAG, "Items read from database");
 
-        itemsAdapter = new ArrayAdapter<Item>(this,
-                android.R.layout.simple_list_item_1, items);
+        itemsAdapter = new ItemAdapter(getApplicationContext(), items);
         lvItems.setAdapter(itemsAdapter);
         setupListViewListener();
         Log.d(TAG, "onCreate End");
@@ -92,7 +93,7 @@ public class AddItemActivity extends AppCompatActivity implements EditNameDialog
                         //intent.putExtra(Constants.POSITION,pos);
                         //Log.d(TAG, "SelectedItem for update Name:" + items.get(pos).getName());
 
-                        showEditDialog(items.get(pos).getName(),pos);
+                        showEditDialog(items.get(pos).getName(),pos, items.get(pos).getDueDate());
                         //startActivityForResult(intent, 1);
 
                     }
@@ -123,10 +124,11 @@ public class AddItemActivity extends AppCompatActivity implements EditNameDialog
     public void onAddItem(View view) {
         Log.d(TAG, "AddItem Started");
         String itemText = etNewItem.getText().toString();
-        itemsAdapter.add(Item.addItem(itemText));
+        showAddDueDateDialog(itemText);
+        //itemsAdapter.add(Item.addItem(itemText));
         etNewItem.setText("");
 
-        Log.d(TAG, "AddItem Ended, New Item Added:" + itemText);
+
     }
 
     /*
@@ -142,25 +144,43 @@ public class AddItemActivity extends AppCompatActivity implements EditNameDialog
     /*
     showEditDialogue box method called by the onClickListener, A dialogue fragment instance is created
      */
-    private void showEditDialog(String selectedItemName,int position) {
+    private void showEditDialog(String selectedItemName,int position, String dueDate) {
         FragmentManager fm = getSupportFragmentManager();
-        EditItemFragment editNameDialog = EditItemFragment.newInstance(selectedItemName,position);
+        EditItemFragment editNameDialog = EditItemFragment.newInstance(selectedItemName, position, dueDate);
         editNameDialog.show(fm, "fragment_edit_name");
+    }
+
+    private void showAddDueDateDialog(String itemName){
+        FragmentManager fm = getSupportFragmentManager();
+        AddDueDateFragment dueDateFragment = AddDueDateFragment.newInstance(itemName);
+        Bundle bundle = new Bundle();
+        bundle.putString(Constants.ADD_ITEM_NAME, itemName);
+        dueDateFragment.setArguments(bundle);
+        dueDateFragment.show(fm,"fragment_due_date");
+
     }
 
     /*
      onFinishDialog checkes if the updatedName and the oldName are different, updates only if there is a change
      */
-    public void onFinishEditDialog(String inputText,int position) {
+    public void onFinishEditDialog(String inputText,int position, String dueDate) {
         Item itemToBeUpdated= (Item) items.get(position);
-        Log.d(TAG,"Update item ID:"+itemToBeUpdated.getId() + "Item Name"+itemToBeUpdated.getName());
+        Log.d(TAG, "Update item ID:" + itemToBeUpdated.getId() + "Item Name" + itemToBeUpdated.getName());
 
         if(!itemToBeUpdated.getName().equals(inputText)){
-        Item.updateItem(itemToBeUpdated.getId(), inputText);
-        items.get(position).setName(inputText);
+        Item.updateItem(itemToBeUpdated.getId(), inputText, dueDate);
+        items.get(position).setName(inputText);items.get(position).setDueDate(dueDate);
         itemsAdapter.notifyDataSetChanged();
         }
     }
+
+    public void onFinishAddDueDateDialog(String itemText, String dueDateString) {
+        itemsAdapter.add(Item.addItem(itemText,dueDateString));
+
+    }
+
+
+
 
     /*
       this method is used only when using another activity and not the dialogue fragment.
