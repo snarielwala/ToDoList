@@ -66,7 +66,8 @@ public class EditItemFragment extends DialogFragment implements View.OnClickList
         EditItemFragment frag = new EditItemFragment();
         Bundle args = new Bundle();
         args.putString(Constants.SELECTED_ITEM, selectedItemName);
-        args.putInt(Constants.POSITION,position);
+        args.putInt(Constants.POSITION, position);
+        args.putString(Constants.DUE_DATE, dueDate);
         frag.setArguments(args);
         return frag;
     }
@@ -96,6 +97,8 @@ public class EditItemFragment extends DialogFragment implements View.OnClickList
         });
 
         editDueDateTextView = (TextView) view.findViewById(R.id.editDueDateText);
+        editDueDateTextView.setText(getArguments().getString(Constants.DUE_DATE));
+
         fetEditItem = (EditText) view.findViewById(R.id.fetEditItem);
         selectedItemName = getArguments().getString(Constants.SELECTED_ITEM);
         position=getArguments().getInt(Constants.POSITION);
@@ -146,6 +149,7 @@ public class EditItemFragment extends DialogFragment implements View.OnClickList
         }
 
         public void onDateSet(DatePicker view, int year, int month, int day) {
+            
             updateDisplay(year,month,day);
         }
 

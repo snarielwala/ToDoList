@@ -30,7 +30,7 @@
         style="?android:attr/buttonStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/save_label"
+        android:text="Finish Editing"
         android:id="@+id/saveBtnFragment"
         android:layout_below="@+id/etEditItem"
         android:layout_alignParentStart="true"
