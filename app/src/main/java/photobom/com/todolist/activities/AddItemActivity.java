@@ -40,6 +40,7 @@ public class AddItemActivity extends AppCompatActivity implements EditNameDialog
     private ListView lvItems;
 
 
+
     private PendingIntent pendingIntent;
 
 
@@ -60,23 +61,11 @@ public class AddItemActivity extends AppCompatActivity implements EditNameDialog
         setupListViewListener();
         Log.d(TAG, "onCreate End");
 
-        Calendar calendar = Calendar.getInstance();
-
-        calendar.set(Calendar.MONTH, 1 );
-        calendar.set(Calendar.YEAR, 2016);
-        calendar.set(Calendar.DAY_OF_MONTH, 26);
-
-        calendar.set(Calendar.HOUR_OF_DAY, 00);
-        calendar.set(Calendar.MINUTE, 13);
-        calendar.set(Calendar.SECOND, 0);
-        calendar.set(Calendar.AM_PM,Calendar.PM);
-
         Intent myIntent = new Intent(AddItemActivity.this, AlarmService.class);
         pendingIntent = PendingIntent.getService(AddItemActivity.this, 0, myIntent, 0);
 
         AlarmManager alarmManager = (AlarmManager)getSystemService(ALARM_SERVICE);
-        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,System.currentTimeMillis(), 86400000, pendingIntent);
-      //  alarmManager.set(AlarmManager.RTC, calendar.getTimeInMillis(), pendingIntent);
+        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,System.currentTimeMillis(),Constants.dayInMilliseconds, pendingIntent);
 
      //end onCreate
 

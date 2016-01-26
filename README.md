@@ -23,7 +23,7 @@ The following **optional** features are implemented:
 *Using dialogue fragment to edit items 
 *Every Item has a due date (Implemented using custom Item adapter)
 *Sends a notification if there are any pending tasks due that day (One notification per day)
-
+Video for the notification: http://imgur.com/2d2VSEb
 
 Here's a walkthrough of implemented user stories:
 
