@@ -61,8 +61,13 @@ public class AddItemActivity extends AppCompatActivity implements EditNameDialog
         setupListViewListener();
         Log.d(TAG, "onCreate End");
 
+        //Push Notification Changes
+
         Intent myIntent = new Intent(AddItemActivity.this, AlarmService.class);
         pendingIntent = PendingIntent.getService(AddItemActivity.this, 0, myIntent, 0);
+
+        //Alarm Manager calls the service which sends out the notification
+        //The notification is sent once everyday only if there are tasks due on that day
 
         AlarmManager alarmManager = (AlarmManager)getSystemService(ALARM_SERVICE);
         alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,System.currentTimeMillis(),Constants.dayInMilliseconds, pendingIntent);
