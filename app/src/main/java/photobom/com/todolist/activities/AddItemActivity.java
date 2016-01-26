@@ -75,7 +75,7 @@ public class AddItemActivity extends AppCompatActivity implements EditNameDialog
         pendingIntent = PendingIntent.getService(AddItemActivity.this, 0, myIntent, 0);
 
         AlarmManager alarmManager = (AlarmManager)getSystemService(ALARM_SERVICE);
-        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,System.currentTimeMillis(), 20, pendingIntent);
+        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,System.currentTimeMillis(), 86400000, pendingIntent);
       //  alarmManager.set(AlarmManager.RTC, calendar.getTimeInMillis(), pendingIntent);
 
      //end onCreate

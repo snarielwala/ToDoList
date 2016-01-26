@@ -22,6 +22,8 @@ The following **optional** features are implemented:
 *Using ActiveAndroid as the ORM for MySqlite
 *Using dialogue fragment to edit items 
 *Every Item has a due date (Implemented using custom Item adapter)
+*Sends a notification if there are any pending tasks due that day (One notification per day)
+
 
 Here's a walkthrough of implemented user stories:
 
