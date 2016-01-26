@@ -1,5 +1,7 @@
 package photobom.com.todolist.activities;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
@@ -9,17 +11,17 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import photobom.com.todolist.R;
 import photobom.com.todolist.adapters.ItemAdapter;
 import photobom.com.todolist.fragments.AddDueDateFragment;
 import photobom.com.todolist.fragments.EditItemFragment;
+import photobom.com.todolist.helpers.AlarmService;
 import photobom.com.todolist.helpers.Constants;
 import photobom.com.todolist.models.Item;
 import photobom.com.todolist.fragments.EditItemFragment.EditNameDialogListener;
@@ -36,6 +38,10 @@ public class AddItemActivity extends AppCompatActivity implements EditNameDialog
     private ArrayList<Item>  items;
     private ItemAdapter itemsAdapter;
     private ListView lvItems;
+
+
+    private PendingIntent pendingIntent;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +60,27 @@ public class AddItemActivity extends AppCompatActivity implements EditNameDialog
         setupListViewListener();
         Log.d(TAG, "onCreate End");
 
-    }
+        Calendar calendar = Calendar.getInstance();
+
+        calendar.set(Calendar.MONTH, 1 );
+        calendar.set(Calendar.YEAR, 2016);
+        calendar.set(Calendar.DAY_OF_MONTH, 26);
+
+        calendar.set(Calendar.HOUR_OF_DAY, 00);
+        calendar.set(Calendar.MINUTE, 13);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.AM_PM,Calendar.PM);
+
+        Intent myIntent = new Intent(AddItemActivity.this, AlarmService.class);
+        pendingIntent = PendingIntent.getService(AddItemActivity.this, 0, myIntent, 0);
+
+        AlarmManager alarmManager = (AlarmManager)getSystemService(ALARM_SERVICE);
+        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,System.currentTimeMillis(), 20, pendingIntent);
+      //  alarmManager.set(AlarmManager.RTC, calendar.getTimeInMillis(), pendingIntent);
+
+     //end onCreate
+
+}
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

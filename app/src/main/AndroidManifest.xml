@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="photobom.com.todolist">
 
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+
     <application
         android:name="com.activeandroid.app.Application"
         android:allowBackup="true"
@@ -32,6 +34,10 @@
         <activity
             android:name=".activities.EditItemActivity"
             android:label="@string/title_activity_edit"></activity>
+        <service android:name=".helpers.AlarmService"
+            android:enabled="true" />
+
+
     </application>
 
 </manifest>

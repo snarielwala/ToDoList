@@ -2,6 +2,7 @@ package photobom.com.todolist.fragments;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.app.PendingIntent;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.os.Bundle;
@@ -32,6 +33,8 @@ public class AddDueDateFragment extends DialogFragment implements View.OnClickLi
 
     private static SimpleDateFormat dueDate;
     private static String dueDateString;
+
+
 
     public AddDueDateFragment() {
     }
